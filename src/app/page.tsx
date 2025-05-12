@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
+import { addData } from "@/action/add-data";
+import { nanoid } from "nanoid";
 
 type WeatherDataType = {
   city: string;
@@ -36,7 +38,15 @@ export default function Home() {
         setError("City not found. Please check the name and try again.");
         setLoading(false);
         return;
+        return;
       }
+
+      const res = await addData({
+        _id: nanoid(),
+        city: data.name,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      })
 
       const simplifiedData: WeatherDataType = {
         city: data.name,
@@ -102,6 +112,11 @@ export default function Home() {
             <p><strong>Wind Speed:</strong> {weatherData.wind_speed}</p>
           </div>
         )}
+        <div className="flex flex-col gap-4 items-center">
+          <span>
+        yess boss
+          </span>
+        </div>
       </main>
     </div>
   );
