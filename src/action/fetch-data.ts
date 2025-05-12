@@ -1,25 +1,24 @@
-'use server'
-
+"use server"
 import { mongodb } from "@/lib/mongodb"
 import { dataCollectionName, IData } from "@/models/data"
 import { ServerActionResult } from "@/types"
 
-export type AddDataResult = ServerActionResult<undefined>
+export type FetchDataResult = ServerActionResult<IData[]>
 
-export const addData = async (data: IData): Promise<AddDataResult> => {
+export const fetchData = async (): Promise<FetchDataResult> => {
   try {
     await mongodb.connect()
-    const res = await mongodb.collection<IData>(dataCollectionName).insertOne(data)
-    if(!res.acknowledged){
+    const res = await mongodb.collection<IData>(dataCollectionName).find({}).toArray()
+    if(!res){
       return {
         success: false,
-        message: "failed to add data",
+        message: "failed to fetch data",
       }
     }
     return {
       success: true,
-      data: undefined,
-      message:"added successfully",
+      data: res,
+      message:"fetched successfully",
     }
   } catch (error:any) {
     return {

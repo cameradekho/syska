@@ -4,3 +4,5 @@ export type IData = {
     createdAt: string;
     updatedAt: string;
 }
+
+export const dataCollectionName = "data"
